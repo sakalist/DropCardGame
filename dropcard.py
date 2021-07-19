@@ -1,7 +1,8 @@
 """ Drop Card Game using pyGame
 Author: Tassos Sakalis
-Version 1.0
-Date: 07/2020
+Version 1.1
+Date:  07/2021
+First Release Date: 07/2020
 
 Info:
 Suits: H (Hearts), D (Diamonds), S (Spades), C (Clubs)
@@ -72,7 +73,7 @@ class Card(object):
         if not self.limit:
             return True
         else:
-            # Εάν είναι είναι στο όριο τότε:
+            # Εάν είναι στο όριο τότε:
             # α. ελέγχουμε αν έχει φτάσει στον πάτο της πίστας
             if self.board_y == 4:
                 self.is_at_bottom = True
@@ -838,11 +839,17 @@ def game_stage():
                     else:
                         # Out of cards - Stage Over
                         # Put all remaining cards in the list: cards_to_clear
+                        # Check empty stage to give bonus
                         # and activate flag: clearing_the_stage
                         for i in range(5):
                             for j in range(5):
                                 if board.grid[i][j]:
                                     cards_to_clear.append(board.grid[i][j])
+                        if not len(cards_to_clear):
+                            # Stage dont have remaining cards, give bonus
+                            points = 1000 + ((level - 1) * 100)
+                            score += points
+                            rewards.append(Reward(1, 5, "Bonus: " + str(points), (0, 255, 0)))
                         clearing_the_stage = True
                 else:
                     # Card on top of 5 cards pile - GAME OVER
